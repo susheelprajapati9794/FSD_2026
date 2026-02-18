@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Name: -->
+    <input id="name" type="text" placeholder="Enter Your Name"><br><br>
+    <!-- Email: -->
+    <input type="email" id="email" placeholder="Enter Email"><br><br>
+    <!-- phone No: -->
+    <input type="tel" name="" id="phone" placeholder="Phone Number"><br><br>
+    <button  id="name" onclick=""></button>
+    <script>
+        let student=[];
+        let emailset=new set();
+        let gardeMap=new Map()
+        function addStudent(){
+            try{
+                // debugging( k liye)
+                debugger;
+                // local scope
+                const name=document.getElementById("name").value;
+                const email=document.getElementById("email").value;
+                const phone=document.getElementById("phone").value;
+
+            // regex validation
+            const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailRegex.test(email)){
+                throw new Error("Invalid email format");
+
+            }
+            emailset.add(email);
+            // object
+
+        }
+    }
+    </script>
+</body>
+</html>
