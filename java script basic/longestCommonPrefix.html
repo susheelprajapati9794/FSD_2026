@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--    longest common prefix problem  input -- ["flower","flow",flight]--output -- "fl"-->
+    <h2>Longest Common Prefix</h2>
+    <input type="text" id="input" placeholder='Enter comma separated strings'>
+    <button onclick="findLongestCommonPrefix()">Find Longest Common Prefix</button>
+    <h3>Longest Common Prefix: <span id="result"></span></h3>
+    <script>
+        function findLongestCommonPrefix() {
+            const input = document.getElementById("input").value;
+            const strings = input.split(',').map(str => str.trim());
+            if (strings.length === 0) {
+                document.getElementById("result").textContent = "";
+                return;
+            }
+            let prefix = strings[0];
+            for (let i = 1; i < strings.length; i++) {
+                while (strings[i].indexOf(prefix) !== 0) {
+                    prefix = prefix.substring(0, prefix.length - 1);
+                    if (prefix === "") {
+                        document.getElementById("result").textContent = "";
+                        return;
+                    }
+                }
+            }
+            document.getElementById("result").textContent = prefix;
+        }
+</body>
+</html>

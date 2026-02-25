@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Student Manager</title>
+</head>
+<body>
+
+<h2>Smart Student Manager</h2>
+
+<input type="text" id="name" placeholder="Enter Name">
+<input type="text" id="email" placeholder="Enter Email">
+<input type="number" id="marks" placeholder="Enter Marks">
+<button onclick="addStudent()">Add Student</button>
+
+<h3>Student List:</h3>
+<ul id="studentList"></ul>
+
+<script>
+
+//  GLOBAL SCOPE 
+let students = [];          // Array
+let emailSet = new Set();   // Set (unique emails)
+let gradeMap = new Map();   // Map (email → grade)
+function addStudent() {
+
+    try {
+
+        // Debugging
+        debugger;
+
+        // Local Scope
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const marks = Number(document.getElementById("marks").value);
+
+        // 
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular Expression for basic email validation
+
+        if (!emailPattern.test(email)) {
+            throw new Error("Invalid Email Format!");  
+        }
+
+        if (marks < 0 || marks > 100) { // Input Validation
+            throw new Error("Marks must be between 0 and 100");
+        }
+
+        if (emailSet.has(email)) { // Check for duplicate email
+            throw new Error("Email already exists!");
+        }
+
+        emailSet.add(email);
+
+        // ================= OBJECT =================
+        const student = {
+            name,
+            email,
+            marks,
+            date: new Date(),   // JS Date
+            getGrade: function() {
+                return calculateGrade(this.marks);
+            }
+        };   
+        students.push(student);  // Add to array
+        gradeMap.set(email, student.getGrade());
+        displayStudents();  //displaty new added student
+        clearFields();
+    } catch (error) {
+        alert(error.message); //incorrect input error handling
+    }
+}
+function calculateGrade(marks) { //calculation correct grade
+    if (marks >= 90) return "A";
+    if (marks >= 75) return "B";
+    if (marks >= 60) return "C";
+    if (marks >= 40) return "D";
+    return "Fail";
+}
+function displayStudents() {  //display all students in list
+    const list = document.getElementById("studentList");
+    list.innerHTML = "";
+    // Iteration (forEach)
+    students.forEach((student) => {
+        // Destructuring
+        const { name, email, marks, date } = student;
+        const li = document.createElement("li");
+        li.textContent = `
+        Name: ${name},
+        Email: ${email},
+        Marks: ${marks},
+        Grade: ${gradeMap.get(email)},
+        Added On: ${date.toLocaleDateString()}
+        `;
+        list.appendChild(li);
+    });
+    calculateAverage();
+}
+function calculateAverage() {  // Function Scope
+    if (students.length === 0) return;
+    let total = 0;
+    for (let student of students) {   // for...of iteration
+        total += student.marks;
+    }
+    const average = Math.round(total / students.length);
+
+    console.log("Class Average:", average);
+}
+
+// ================= CLEAR INPUT =================
+function clearFields() {
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("marks").value = "";
+}
+// add delete button to remove student from list
+function deleteStudent(email) {
+    students = students.filter(student => student.email !== email); // Remove from array
+    emailSet.delete(email); // Remove from set
+    gradeMap.delete(email); // Remove from map
+    displayStudents(); // Update display
+}
+//display delete button for each student
+function displayStudents() {
+    const list = document.getElementById("studentList");
+    list.innerHTML = "";
+    students.forEach((student) => {
+        const { name, email, marks, date } = student;
+        const li = document.createElement("li");
+        li.textContent = `
+        Name: ${name},
+        Email: ${email},
+        Marks: ${marks},
+        Grade: ${gradeMap.get(email)},
+        Added On: ${date.toLocaleDateString()}
+        `;
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.onclick = () => deleteStudent(email);
+        li.appendChild(deleteBtn);
+        list.appendChild(li);
+    });
+    calculateAverage();
+}
+
+
+
+
+</script>
+
+</body>
+</html>
