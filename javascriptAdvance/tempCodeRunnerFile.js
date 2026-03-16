@@ -26,5 +26,5 @@ console.log(utcDateTime.toString());
 
 // duration
 let duration= Temporal.Duration.from({hours: 2, minutes: 30});
-console.log(duration.toString());   
+console.log(duration.toString());
 console.log("my name i9s")
